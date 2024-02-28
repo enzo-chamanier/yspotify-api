@@ -18,7 +18,7 @@ Ce projet est une application web permettant aux utilisateurs de créer des grou
 1. Clonez ce dépôt sur votre machine locale.
 2. Assurez-vous d'avoir Node.js installé.
 3. Installez les dépendances en exécutant `npm install`.
-4. Démarrez le serveur en exécutant `npm start`.
+4. Démarrez le serveur en exécutant `nodemon server.js` ou `node server.js`.
 5. Accédez à l'application dans votre navigateur en visitant `http://localhost:3000`.
 
 ## Utilisation de Swagger pour la documentation de l'API
