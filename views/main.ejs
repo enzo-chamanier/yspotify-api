@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <title>Dashboard</title>
+</head>
+<body>
+    <center>
+        <br>
+        <h1>Bienvenue sur votre dashboard <U><%= user.username %></U> !</h1>
+        <% if (!spotifyLinked) { %>
+            <form action="/loginspotify" method="get">
+                <button style="background-color:green;border-radius:30px;color:white;padding:10px;">Associer mon compte Spotify</button>
+            </form>
+        <% } else { %>
+            <div style="display:flex;align-items:center;justify-content:center;">
+                <button style="background-color:gray;border-radius:30px;color:white;padding:10px;margin-right:10px;" disabled>Compte Spotify déjà associé</button>
+                <form action="/unlinkspotify" method="post">
+                    <button type="submit" style="background-color:red;border-radius:50%;color:white;padding:5px 10px;">&#10005;</button>
+                </form>
+            </div>
+        <% } %>
+        <br>
+        <hr style="width:600px;">
+        <br>
+        <!-- Liste des groupes avec bouton rejoindre -->
+        <h2>Liste des groupes</h2>
+        <% if (user.group.length === 0) { %>
+            <h3>Vous n'appartenez à aucun groupe</h3>
+        <% } else { %>
+            <h3>Vous faites partie du <%= user.group %></h3>
+        <% } %>
+        <br>
+        <ul style="list-style-type:none;padding-left:0;">
+          <% groupes.forEach(groupe => { %>
+            <li style="display: flex; justify-content: center; align-items: center; margin-bottom: 5px;">
+              <span><%= groupe.nom %></span> <!-- Affiche le nom du groupe -->
+              <span style="margin-left: 10px;">
+                (<%= groupe.nbUtilisateurs %> <%= groupe.nbUtilisateurs <= 1 ? 'utilisateur' : 'utilisateurs' %>)
+              </span> <!-- Gère le singulier et le pluriel -->
+              
+              <form action="/joindreGroupe" method="post" style="margin-left:10px;">
+                <input type="hidden" name="nomGroupe" value="<%= groupe.nom %>">
+                <button type="submit" <%= user.spotifyLinked ? '' : 'disabled' %>>Rejoindre</button>
+              </form>
+              
+              <form action="/synchroniser" method="post" style="margin-left:10px;">
+                <button type="submit" <%= groupe.estLeaderActuel && groupe.nbUtilisateurs >= 2 ? '' : 'disabled' %>>Synchroniser avec le groupe</button>
+              </form>
+        
+              <form action="/groupes/<%= groupe.nom %>/membres" method="get" style="margin-left:10px;">
+                <button type="submit">Voir</button>
+              </form>
+            </li>
+          <% }); %>
+        </ul>
+        
+          
+
+
+
+        <br>
+        <hr style="width:600px;">
+        <br>
+        <button onclick="window.location.href='/'">Retourner à l'accueil</button>
+    </center>
+</body>
+</html>
+
+<style>
+    * {
+    margin: 0;
+    padding: 0;
+}
+
+</style>
